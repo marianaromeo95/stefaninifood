@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+</h:head>
+
+<h:body>
+
+	<div class="card">
+		<h:form>
+			<p:growl id="messages" />
+
+			<p:menubar>
+				<p:menuitem value="Usuarios" action="#{pageBean.moveToUsuario}"
+					icon="pi pi-fw pi-power-off" />
+				<p:menuitem value="Estabelecimentos"
+					action="#{pageBean.moveToEstabelecimento}"
+					icon="pi pi-fw pi-power-off" />
+				<p:menuitem value="Produtos" action="#{pageBean.moveToProduto}"
+					icon="pi pi-fw pi-power-off" />
+				<p:menuitem value="Vendas" action="#{pageBean.moveToVenda}"
+					icon="pi pi-fw pi-power-off" />
+
+			</p:menubar>
+		</h:form>
+	</div>
+	<h1>Cadastrar Novo Produto Stefanini Food</h1>
+	<h:form>
+		<h:messages id="messages" />
+		<fieldset>
+			<legend>Cadastrar Produto</legend>
+			<h:panelGrid columns="2">
+
+				<h:outputLabel value="Produto:" for="produto" />
+				<h:inputText id="produto" value="#{produtoBean.produto.nome}"
+					required="true" requiredMessage="Campo Nome obrigatório"
+					placeholder="Digite o nome do produto"
+					validatorMessage="Nome do produto não pode ser superior a 50 caracteres">
+					<f:validateLength maximum="40" />
+					<f:ajax event="blur" render="messages" />
+				</h:inputText>
+
+				<p:outputLabel for="preco" value="Preço: " />
+				<p:inputNumber id="preco" value="#{produtoBean.produto.preco}"
+					symbol=" BRL" symbolPosition="s" decimalSeparator=","
+					thousandSeparator="." />
+
+
+				<h:outputLabel value="Estabelecimento:" for="estabelecimento" />
+				<h:selectOneMenu value="#{produtoBean.estabelecimentoId}"
+					required="true" requiredMessage="Por favor selecionar estabelecimento">
+					<f:selectItems value="#{produtoBean.estabelecimentos}"
+						var="estabelecimento" itemLabel="#{estabelecimento.nome}"
+						itemValue="#{estabelecimento.id}" />
+				</h:selectOneMenu>
+
+			</h:panelGrid>
+		</fieldset>
+
+		<h:commandButton value="Cadastrar" action="#{produtoBean.cadastrar}">
+
+
+		</h:commandButton>
+	</h:form>
+
+	<p:dataTable var="produto" value="#{produtoBean.produtos}"
+		id="tabelaProduto">
+		<p:column headerText="Id">
+			<h:outputText value="#{produto.id}" />
+		</p:column>
+
+		<p:column headerText="Produto">
+			<h:outputText value="#{produto.nome}" />
+		</p:column>
+
+		<p:column headerText="Preço">
+			<h:outputText value="#{produto.preco}" />
+		</p:column>
+
+		<p:column headerText="Estabelecimento">
+			<h:outputText value="#{produto.estabelecimento.nome}" />
+		</p:column>
+
+		<p:column headerText="Ações">
+			<h:link value="Editar" outcome="produto">
+				<f:param name="produtoId" value="#{produto.id}" />
+			</h:link>
+			<h:link value="Excluir" outcome="produto" style="margin-left: 36px;">
+				<f:param name="deleteId" value="#{produto.id}" />
+			</h:link>
+		</p:column>
+
+	</p:dataTable>
+
+</h:body>
+
+</html>
